@@ -1,3 +1,5 @@
+import java.awt.EventQueue;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -6,6 +8,7 @@ public class Main
 
 	public static void main(String[] args)
 	{
+		
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -27,7 +30,13 @@ public class Main
 			e.printStackTrace();
 		}
 		
-		new Home();
+		EventQueue.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					new Home();
+				}
+			});
 	}
 
 }
