@@ -46,9 +46,9 @@ public class CardPanel extends JPanel
 		ButtonPanel beverages = new ButtonPanel("Beverages", beveragesList, this);
 		ButtonPanel bar = new ButtonPanel("Bar", barList, this);
 		
-		ButtonPanel soda = new ButtonPanel("Soda", sodasList, this);
-		ButtonPanel juice = new ButtonPanel("Juice", juicesList, this);
-		ButtonPanel milk = new ButtonPanel("Milk", milksList, this);
+		ButtonPanel soda = new ModifiersPanel("Soda", sodasList, this);
+		ButtonPanel juice = new ModifiersPanel("Juice", juicesList, this);
+		ButtonPanel milk = new ModifiersPanel("Milk", milksList, this);
 		
 		// Add the cards to the card panel and supply an identifier for the card
 		add(welcome);
