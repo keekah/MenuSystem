@@ -25,6 +25,8 @@ public class ButtonPanel extends JPanel
 		setLayout(new BorderLayout());
 		setBackground(new Color(209, 208, 199));
 		
+//		char character = '\u2Ee5';
+//		JLabel titleLabel = new JLabel("" + character);
 		JLabel titleLabel = new JLabel("<html><h1>"+title+"</h1></html>");
 //		add(titleLabel);
 		add(titleLabel, BorderLayout.NORTH);
@@ -35,6 +37,7 @@ public class ButtonPanel extends JPanel
 			buttons = createButtons(buttonLabels);
 			addButtons();
 		}
+		
 	}
 	
 	public CardPanel getCardPanel()
@@ -60,6 +63,7 @@ public class ButtonPanel extends JPanel
 					public void actionPerformed(ActionEvent e)
 					{
 						buttonPressed(e.getActionCommand());
+						System.out.println(e.getActionCommand());
 					}
 				});
 			buttons.add(b);

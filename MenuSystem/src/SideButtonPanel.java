@@ -16,6 +16,7 @@ public class SideButtonPanel extends JPanel
 	private CardPanel cardPanel;
 	private CardLayout layout;
 	private List<JButton> buttons;
+	private List<Category> mainCategories;
 	
 	public SideButtonPanel(CardPanel cardPanel)
 	{
@@ -23,10 +24,11 @@ public class SideButtonPanel extends JPanel
 		setBackground(new Color(171, 240, 247));
 		
 		this.cardPanel = cardPanel;
+		this.mainCategories = cardPanel.getMainCategories();
+		
 		layout = (CardLayout)cardPanel.getLayout();
 		
-		List<String> categories = specifyCategories();
-		buttons = createButtons(categories);
+		buttons = createButtons();
 
 		placeLogoImage();
 		
@@ -34,28 +36,15 @@ public class SideButtonPanel extends JPanel
 			add(buttons.get(i), new GBC(0, i+1).setInsets(1, 5, 1, 5));
 	}
 
-	private List<String> specifyCategories()
-	{
-		List<String> list = new ArrayList<String>();
-		
-		list.add("Kids");
-		list.add("App/Soup/Salad");
-		list.add("Main Dishes");
-		list.add("Sides");
-		list.add("Desserts");
-		list.add("Beverages");
-		list.add("Bar");
-		
-		return list;
-	}
+
 	
-	private List<JButton> createButtons(List<String> labels)
+	private List<JButton> createButtons()
 	{
 		List<JButton> buttons = new ArrayList<JButton>();
 		
-		for (String s : labels)
+		for (Category c : mainCategories)
 		{
-			JButton b = new JButton(s);
+			JButton b = new JButton(c.getName());
 			b.setPreferredSize(new Dimension(125, 100));
 			b.addActionListener(new ActionListener()
 				{
@@ -66,8 +55,9 @@ public class SideButtonPanel extends JPanel
 				});
 			buttons.add(b);
 		}
-			
+		
 		return buttons;
+			
 	}
 	
 	private void placeLogoImage()
