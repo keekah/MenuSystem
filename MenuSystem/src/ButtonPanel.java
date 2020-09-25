@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 public class ButtonPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
+	private static final int MAX_COLUMNS = 6;
 	
 	private List<JButton> buttons;
 	private CardPanel cardPanel;
@@ -17,20 +18,13 @@ public class ButtonPanel extends JPanel
 	
 	public ButtonPanel(String title, List<String> buttonLabels, CardPanel cardPanel)
 	{	
-//		setLayout(new GridLayout(2, 1));
-		
 		this.cardPanel = cardPanel;
 		layout = (CardLayout)cardPanel.getLayout();
 		
 		setLayout(new BorderLayout());
 		setBackground(new Color(209, 208, 199));
-		
-//		char character = '\u2Ee5';
-//		JLabel titleLabel = new JLabel("" + character);
-		JLabel titleLabel = new JLabel("<html><h1>"+title+"</h1></html>");
-//		add(titleLabel);
-		add(titleLabel, BorderLayout.NORTH);
-		titleLabel.setBorder(new EmptyBorder(15, 10, 0, 0));
+		setTitle(title);
+
 		
 		if (buttonLabels != null)
 		{
@@ -38,6 +32,13 @@ public class ButtonPanel extends JPanel
 			addButtons();
 		}
 		
+	}
+	
+	private void setTitle(String title)
+	{
+		JLabel titleLabel = new JLabel("<html><h1>"+title+"</h1></html>");
+		add(titleLabel, BorderLayout.NORTH);
+		titleLabel.setBorder(new EmptyBorder(15, 10, 0, 0));
 	}
 	
 	public CardPanel getCardPanel()
@@ -63,9 +64,9 @@ public class ButtonPanel extends JPanel
 					public void actionPerformed(ActionEvent e)
 					{
 						buttonPressed(e.getActionCommand());
-						System.out.println(e.getActionCommand());
 					}
 				});
+			
 			buttons.add(b);
 		}
 		
@@ -79,14 +80,15 @@ public class ButtonPanel extends JPanel
 		
 		int row = 0;
 		int col = 0;
+		
 		for (JButton b : buttons)
 		{
 			panel.add(b, new GBC(col++, row).setAnchor(GBC.WEST).setInsets(2));
 			
-			if (col > (buttons.size()/2))
+			if (col >= MAX_COLUMNS)
 			{
-				row++;
 				col = 0;
+				row++;
 			}
 		}
 	
