@@ -7,8 +7,7 @@ import java.util.List;
 import javax.swing.*;
 
 // CardPanel holds a different card for every category in the SideButtonPanel and updates the 
-// frame's BorderLayout.center area. For now things are hard-coded but will eventually be read in 
-// from a database.
+// frame's BorderLayout.center area.
 
 
 public class CardPanel extends JPanel
@@ -24,22 +23,11 @@ public class CardPanel extends JPanel
 	{
 		setLayout(new CardLayout());
 		
-		DatabaseTest dbTest = new DatabaseTest();
-		Connection conn = null;
-		try
-		{
-			conn = dbTest.getConnection();
-			items = dbTest.getAllItems(conn);
-			categories = dbTest.getAllCategories(conn);
-		} 
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		queryDB();
 		
 		mainCategories = new ArrayList<Category>();
 		
-		// Add all the button panels to the card layout. Welcome is the first and therefore will be displayed initially.
+		// Add all the button panels to the card layout. Welcome is the first card and therefore will be displayed initially.
 		ButtonPanel welcome = new ButtonPanel("Jake's American Bar", null, this);
 		add(welcome);
 		
@@ -62,6 +50,27 @@ public class CardPanel extends JPanel
 				// Category name will be the identifier.
 				add(panel, c.getName());
 			}
+		}
+	}
+	
+	
+	private void queryDB()
+	{
+		DatabaseTest dbTest = new DatabaseTest();
+		Connection conn = null;
+		try
+		{
+			conn = dbTest.getConnection();
+			items = dbTest.getAllItems(conn);
+			categories = dbTest.getAllCategories(conn);
+		} 
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			Utilities.close(conn);
 		}
 	}
 	

@@ -8,20 +8,13 @@ public class DatabaseTest
 {	
 	public Connection getConnection() throws SQLException
 	{
-		Connection conn = null;
 		Properties connectionProperties = new Properties();
 		connectionProperties.put("user", "postgres");
 		connectionProperties.put("password", "docker");
 		
 		String url = "jdbc:postgresql://localhost:5432/jakes";
 		
-		conn = DriverManager.getConnection(url, connectionProperties);
-		
-		if (conn == null)
-			System.out.println("Connection failed");
-		
-		return conn;
-		
+		return DriverManager.getConnection(url, connectionProperties);
 	}
 	
 	public void createTable(Connection conn) throws SQLException
@@ -33,20 +26,14 @@ public class DatabaseTest
 								"price integer not null constraint not_negative check (price >= 0), " +
 								"label varchar(30)" +
 								");";
-		Statement stmt = null;
+		Statement stmt = conn.createStatement();
 		try
 		{
-			stmt = conn.createStatement();
 			stmt.executeUpdate(createString);
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
 		}
 		finally 
 		{
-			if (stmt != null)
-				stmt.close();
+			stmt.close();
 		}
 	}
 	
@@ -60,11 +47,12 @@ public class DatabaseTest
 						"WHERE is_item_available = true;";
 		
 		Statement stmt = null;
+		ResultSet rs = null;
 		
 		try
 		{
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(query);
 			
 			while (rs.next())
 			{
@@ -82,6 +70,11 @@ public class DatabaseTest
 		{
 			e.printStackTrace();
 		}
+		finally
+		{
+			Utilities.close(stmt);
+			Utilities.close(rs);
+		}
 		
 		return items;
 	}
@@ -97,10 +90,12 @@ public class DatabaseTest
 							"AND items_categories.category_id = categories.category_id;";
 		
 		Statement stmt = null;
+		ResultSet rs = null;
+		
 		try
 		{
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(query);
 			
 			while (rs.next())
 			{
@@ -113,6 +108,11 @@ public class DatabaseTest
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+		}
+		finally
+		{
+			Utilities.close(stmt);
+			Utilities.close(rs);
 		}
 		
 		return categories;
@@ -128,11 +128,12 @@ public class DatabaseTest
 						"FROM categories ";
 		
 		Statement stmt = null;
+		ResultSet rs = null;
 		
 		try
 		{
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(query);
 			
 			while (rs.next())
 			{
@@ -149,6 +150,12 @@ public class DatabaseTest
 		{
 			e.printStackTrace();
 		}
+		finally
+		{
+			Utilities.close(stmt);
+			Utilities.close(rs);
+		}
+		
 		
 		return categories;
 	}
@@ -166,11 +173,12 @@ public class DatabaseTest
 							"AND items.is_item_available = TRUE;";
 		
 		Statement stmt = null;
+		ResultSet rs = null;
 		
 		try
 		{
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			rs = stmt.executeQuery(query);
 			
 			while (rs.next())
 			{
@@ -184,6 +192,11 @@ public class DatabaseTest
 		catch (SQLException e)
 		{
 			e.printStackTrace();
+		}
+		finally
+		{
+			Utilities.close(stmt);
+			Utilities.close(rs);
 		}
 		
 		return items;
