@@ -33,7 +33,7 @@ public class DatabaseTest
 		}
 		finally 
 		{
-			stmt.close();
+			Utilities.close(stmt);
 		}
 	}
 	
@@ -86,16 +86,18 @@ public class DatabaseTest
 		
 		String query = "SELECT categories.category_name, categories.is_main_category " +
 						"FROM categories, items_categories " +
-						"WHERE items_categories.item_id = " + itemID + " " +
+						"WHERE items_categories.item_id = ? " +
 							"AND items_categories.category_id = categories.category_id;";
 		
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try
 		{
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(query);
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1,  itemID);
+			
+			rs = stmt.executeQuery();
 			
 			while (rs.next())
 			{
@@ -168,17 +170,19 @@ public class DatabaseTest
 		
 		String query = "SELECT items.item_id, items.item_name, items.item_price " +
 						"FROM items, items_categories " +
-						"WHERE items_categories.category_id = " + categoryID + " " +
+						"WHERE items_categories.category_id = ? " +
 							"AND items_categories.item_id = items.item_id " + 
 							"AND items.is_item_available = TRUE;";
 		
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
 		try
 		{
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(query);
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, categoryID);
+			
+			rs = stmt.executeQuery();
 			
 			while (rs.next())
 			{
